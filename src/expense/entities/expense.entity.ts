@@ -1,5 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {HydratedDocument} from 'mongoose';
+import mongoose, {HydratedDocument} from 'mongoose';
+import {Category} from "../../category/entities/category.entity";
+import {User} from "../../user/entities/user.entity";
 
 export type ExpenseDocument = HydratedDocument<Expense>;
 
@@ -11,8 +13,14 @@ export class Expense {
     @Prop()
     description: string;
 
+    @Prop({  type: mongoose.Schema.Types.ObjectId, ref: 'Category'})
+    category: Category;
+
+    @Prop({  type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+    user: User;
+
     @Prop()
-    category: string;
+    date: Date
 }
 
 export const ExpenseSchema = SchemaFactory.createForClass(Expense);
