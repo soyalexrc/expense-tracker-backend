@@ -18,17 +18,9 @@ export class CreateExpenseDto {
 
     @IsString()
     @MinLength(1)
-    user: string;
+    payment: string;
 
     @IsString()
     @MinLength(1)
-    currency: string;
-
-    @IsNumber()
-    @IsPositive()
-    amount: number;
-
-    @IsDate()
-    @Type(() => Date)
-    date: Date;
+    user: string;
 }

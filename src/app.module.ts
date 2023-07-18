@@ -10,10 +10,10 @@ import { UserModule } from './user/user.module';
 import { PaymentModule } from './payment/payment.module';
 import { SourceModule } from './source/source.module';
 import { RecurrentExpenseModule } from './recurrent-expense/recurrent-expense.module';
-import { SuscriptionModule } from './suscription/suscription.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { DebtModule } from './debt/debt.module';
 import { DebtPaymentModule } from './debt-payment/debt-payment.module';
+import { TypeOfSourceModule } from './type-of-source/type-of-source.module';
 
 
 @Module({
@@ -34,10 +34,10 @@ import { DebtPaymentModule } from './debt-payment/debt-payment.module';
     PaymentModule,
     SourceModule,
     RecurrentExpenseModule,
-    SuscriptionModule,
     SubscriptionModule,
     DebtModule,
     DebtPaymentModule,
+    TypeOfSourceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

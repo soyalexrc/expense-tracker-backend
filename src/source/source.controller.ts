@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Put} from '@nestjs/common';
 import { SourceService } from './source.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
@@ -19,16 +19,16 @@ export class SourceController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.sourceService.findOne(+id);
+    return this.sourceService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateSourceDto: UpdateSourceDto) {
-    return this.sourceService.update(+id, updateSourceDto);
+    return this.sourceService.update(id, updateSourceDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.sourceService.remove(+id);
+    return this.sourceService.remove(id);
   }
 }

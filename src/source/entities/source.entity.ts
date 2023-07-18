@@ -1,27 +1,20 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import mongoose, {HydratedDocument} from 'mongoose';
+import {TypeSource} from "../../type-of-source/entities/type-of-source.entity";
 
 export type SourceDocument = HydratedDocument<Source>;
 
-@Schema()
+@Schema({timestamps: true})
 export class Source {
-    @Prop()
-    amountSpent: number;
 
     @Prop()
     title: string;
 
-    @Prop()
-    typeOfSource: string;
+    @Prop({  type: mongoose.Schema.Types.ObjectId, ref: 'TypeSource'})
+    typeSource: TypeSource;
 
     @Prop()
     identification: string;
-
-    @Prop()
-    currency: string;
-
-    @Prop()
-    date: Date
 
 }
 

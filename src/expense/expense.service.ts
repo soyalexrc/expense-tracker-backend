@@ -25,7 +25,18 @@ export class ExpenseService {
   }
 
   async findAll(){
-    const data = await this.expenseModel.find().populate(['category']);
+    const data = await this.expenseModel
+        .find()
+        .populate('category')
+        .populate({
+          path: 'payment',
+          populate: {
+            path: 'source',
+            populate: {
+              path: 'typeSource'
+            }
+          }
+        })
 
     return {
       results: data

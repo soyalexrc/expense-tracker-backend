@@ -1,26 +1,68 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
+import {InjectModel} from "@nestjs/mongoose";
+import {Model} from "mongoose";
+import {Debt} from "./entities/debt.entity";
 
 @Injectable()
 export class DebtService {
-  create(createDebtDto: CreateDebtDto) {
-    return 'This action adds a new debt';
+
+  constructor(
+      @InjectModel(Debt.name) private debtModel: Model<Debt>,
+  ) {
   }
 
-  findAll() {
-    return `This action returns all debt`;
+
+  async create(createDebtDto: CreateDebtDto) {
+    try {
+      const data = await this.debtModel.create(createDebtDto);
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} debt`;
+  async findAll() {
+    try {
+      const data = await this.debtModel.find();
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  update(id: number, updateDebtDto: UpdateDebtDto) {
+  async findOne(id: string) {
+    try {
+      const data = await this.debtModel.findById(id);
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  update(id: string, updateDebtDto: UpdateDebtDto) {
     return `This action updates a #${id} debt`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} debt`;
+  async remove(id: string) {
+    try {
+      const data = await this.debtModel.deleteOne( {_id: id});
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 }

@@ -1,15 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecurrentExpenseDto } from './dto/create-recurrent-expense.dto';
 import { UpdateRecurrentExpenseDto } from './dto/update-recurrent-expense.dto';
+import {InjectModel} from "@nestjs/mongoose";
+import {Model} from "mongoose";
+import {RecurrentExpense} from "./entities/recurrent-expense.entity";
 
 @Injectable()
 export class RecurrentExpenseService {
-  create(createRecurrentExpenseDto: CreateRecurrentExpenseDto) {
-    return 'This action adds a new recurrentExpense';
+
+  constructor(
+      @InjectModel(RecurrentExpense.name) private recurrentExpenseModel: Model<RecurrentExpense>,
+  ) {
+  }
+  async create(createRecurrentExpenseDto: CreateRecurrentExpenseDto) {
+    try {
+      const data = await this.recurrentExpenseModel.create(createRecurrentExpenseDto);
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  findAll() {
-    return `This action returns all recurrentExpense`;
+  async findAll() {
+    try {
+      const data = await this.recurrentExpenseModel
+          .find()
+          .populate('subscription')
+          .populate({
+            path: 'payment',
+            populate: {
+              path: 'source',
+              populate: {
+                path: 'typeSource'
+              }
+            }
+          })
+      ;
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   findOne(id: number) {

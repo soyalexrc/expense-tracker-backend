@@ -4,20 +4,13 @@ import {Source} from "../../source/entities/source.entity";
 
 export type PaymentDocument = HydratedDocument<Payment>;
 
-@Schema()
+@Schema({timestamps: true})
 export class Payment {
     @Prop()
     amount: number;
 
-    @Prop()
-    paymentType: string;
-
     @Prop({  type: mongoose.Schema.Types.ObjectId, ref: 'Source'})
     source: Source;
-
-    @Prop()
-    date: Date
-
 
     @Prop()
     currency: string;

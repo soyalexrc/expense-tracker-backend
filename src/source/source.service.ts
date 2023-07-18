@@ -1,26 +1,82 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
+import {InjectModel} from "@nestjs/mongoose";
+import {Model} from "mongoose";
+import {Source} from "./entities/source.entity";
 
 @Injectable()
 export class SourceService {
-  create(createSourceDto: CreateSourceDto) {
-    return 'This action adds a new source';
+
+  constructor(
+      @InjectModel(Source.name) private sourceModel: Model<Source>,
+  ) {
+  }
+  async create(createSourceDto: CreateSourceDto) {
+    try {
+      const data = await this.sourceModel.create(createSourceDto);
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  findAll() {
-    return `This action returns all source`;
+  async findAll() {
+    try {
+      const data = await this.sourceModel.find().populate('typeSource');
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} source`;
+  async findOne(id: string) {
+    try {
+      const data = await this.sourceModel.findById(id);
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  update(id: number, updateSourceDto: UpdateSourceDto) {
-    return `This action updates a #${id} source`;
+  async update(id: string, updateSourceDto: UpdateSourceDto) {
+    try {
+      const source = await this.sourceModel.findById(id)
+      if (!source) return { success: false, error: `Source with id ${id} not found.` };
+
+      console.log(source);
+
+      const updated = await source.updateOne(updateSourceDto);
+
+      return {
+        success: true,
+        data: updated
+      }
+
+
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} source`;
+  async remove(id: string) {
+    try {
+      const data = await this.sourceModel.deleteOne({_id: id});
+      return {
+        success: true,
+        data
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
